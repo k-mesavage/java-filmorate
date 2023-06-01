@@ -29,22 +29,23 @@ public class UserController {
         if (user.getName() == null) {
             user.setName(user.getLogin());
         }
-
         users.put(user.getId(), user);
         return user;
     }
 
     @PutMapping
     public User updateUser(@Valid @RequestBody User user) {
-        if(users.get(user.getId()) == null) {
+        if(users.get(user.getId()) != null) {
+            if (user.getName() == null) {
+                user.setName(user.getLogin());
+            }
+            users.put(user.getId(), user);
+        } else {
             throw new ValidationException("UnknownUser");
         }
-        if (user.getName() == null) {
-            user.setName(user.getLogin());
-        }
-        users.put(user.getId(), user);
         return user;
     }
+
     @GetMapping
     public List<User> getUsers() {
         return new ArrayList<>(users.values());
