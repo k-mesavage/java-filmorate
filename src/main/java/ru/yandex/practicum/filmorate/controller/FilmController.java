@@ -26,7 +26,7 @@ public class FilmController {
     }
 
     @GetMapping
-    public List <Film> getFilms() {
+    public List<Film> getFilms() {
         return new ArrayList<>(films.values());
     }
 
@@ -43,10 +43,7 @@ public class FilmController {
 
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film film) {
-        if(films.get(film.getId()) == null) {
-            throw new ValidationException("UnknownFilmData");
-        }
-            if (film.getReleaseDate().isAfter(MIN_REALISE_DATE)) {
+            if (film.getReleaseDate().isAfter(MIN_REALISE_DATE) || films.get(film.getId()) != null) {
                 films.put(film.getId(), film);
             } else {
                 throw new ValidationException("releaseDate");
