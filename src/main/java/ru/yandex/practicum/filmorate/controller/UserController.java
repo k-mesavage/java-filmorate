@@ -29,6 +29,7 @@ public class UserController {
         if (user.getName() == null) {
             user.setName(user.getLogin());
         }
+
         users.put(user.getId(), user);
         return user;
     }
