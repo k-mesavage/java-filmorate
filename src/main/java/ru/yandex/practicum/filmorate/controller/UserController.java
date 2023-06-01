@@ -35,7 +35,7 @@ public class UserController {
 
     @PutMapping
     public User updateUser(@Valid @RequestBody User user) {
-        if(users.get(user.getId()) != null) {
+        if (users.get(user.getId()) != null) {
             if (user.getName() == null) {
                 user.setName(user.getLogin());
             }
