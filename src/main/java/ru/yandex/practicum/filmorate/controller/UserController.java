@@ -41,11 +41,10 @@ public class UserController {
         }
     }
 
-
     @PostMapping
     public User addUser(@Valid @RequestBody User user) {
         idGenerator(user);
-        if(user.getName() == null) {
+        if (user.getName() == null) {
             user.setName(user.getLogin());
         }
         usersMap.put(user.getId(), user);
