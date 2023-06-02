@@ -18,6 +18,7 @@ public class FilmController {
     Integer id = 0;
     private HashMap<Integer, Film> filmsMap = new HashMap<>();
     private static final LocalDate MIN_RELEASE_DATE = LocalDate.of(1895, 11,28);
+
     private void idGenerator(Film film) {
         film.setId(++id);
     }
