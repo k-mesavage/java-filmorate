@@ -28,8 +28,8 @@ public class FilmController {
     }
 
     @PutMapping
-    public Film updateFilm(@Valid @RequestBody Film film) throws ValidException{
-        if(filmsMap.get(film.getId()) != null && film.getReleaseDate().isAfter(MIN_RELEASE_DATE)) {
+    public Film updateFilm(@Valid @RequestBody Film film) throws ValidException {
+        if (filmsMap.get(film.getId()) != null && film.getReleaseDate().isAfter(MIN_RELEASE_DATE)) {
             filmsMap.put(film.getId(), film);
         } else {
             throw new ValidException("InvalidFilmUpdate");
@@ -39,7 +39,7 @@ public class FilmController {
 
     @PostMapping
     public Film addFilm(@Valid @RequestBody Film film) throws ValidException {
-        if(film.getReleaseDate().isAfter(MIN_RELEASE_DATE)) {
+        if (film.getReleaseDate().isAfter(MIN_RELEASE_DATE)) {
             idGenerator(film);
             filmsMap.put(film.getId(), film);
         } else {
