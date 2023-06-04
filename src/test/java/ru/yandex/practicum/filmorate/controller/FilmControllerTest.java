@@ -154,6 +154,7 @@ class FilmControllerTest {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(400, response.statusCode());
     }
+
     @Test
     void shouldAddFilmWithInvalidDuration() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
@@ -171,7 +172,7 @@ class FilmControllerTest {
                 .uri(url)
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
-        HttpResponse<String>response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(400, response.statusCode());
     }
 
@@ -194,7 +195,7 @@ class FilmControllerTest {
                 .uri(url)
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
-        HttpResponse<String>response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(400, response.statusCode());
     }
 }
