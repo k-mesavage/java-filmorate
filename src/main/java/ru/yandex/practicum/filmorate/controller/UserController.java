@@ -9,44 +9,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.filmorate.exeption.ValidException;
+import ru.yandex.practicum.filmorate.manager.UserManager;
 import ru.yandex.practicum.filmorate.model.User;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
-    private Integer id = 0;
-    private final Map<Integer, User> usersMap = new HashMap<>();
-
-    private void generateId(User user) {
-        ++id;
-        user.setId(id);
-    }
-
     private static final Logger log = LoggerFactory.getLogger(FilmController.class);
-
-    private ArrayList<User>getUsers() {
-         return new ArrayList<>(usersMap.values());
-    }
+    private static final UserManager userManager = new UserManager();
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return getUsers();
+    public ArrayList<User> getAllUsers() {
+        return userManager.getAllUsers();
     }
 
     @PutMapping
     public User updateUser(@Valid @RequestBody User user) throws ValidException {
-        if (usersMap.get(user.getId()) != null) {
-            if (user.getName() == null) {
-                user.setName(user.getLogin());
-            }
-            usersMap.put(user.getId(), user);
+        if (userManager.updateUser(user)) {
             log.info("Обновление пользователя id: " + user.getId());
             return user;
         } else {
@@ -57,13 +40,8 @@ public class UserController {
 
     @PostMapping
     public User addUser(@Valid @RequestBody User user) {
-        generateId(user);
-        if (user.getName() == null) {
-            user.setName(user.getLogin());
-        }
-        usersMap.put(user.getId(), user);
+        userManager.addUser(user);
         log.info("Добавлен пользователь id: " + user.getId());
         return user;
     }
-
 }

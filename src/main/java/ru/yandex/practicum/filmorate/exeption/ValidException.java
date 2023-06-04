@@ -1,8 +1,6 @@
 package ru.yandex.practicum.filmorate.exeption;
 
-import java.io.IOException;
-
-public class ValidException extends IOException {
+public class ValidException extends RuntimeException {
     public ValidException(String message) {
         super(message);
     }

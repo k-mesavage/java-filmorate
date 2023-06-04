@@ -12,7 +12,8 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = ReleaseDateValidator.class)
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ReleaseDate {    String message() default "{ReleaseDate}";
+public @interface ReleaseDate {
+    String message() default "{ReleaseDate}";
 
     Class<?>[] groups() default {};
 

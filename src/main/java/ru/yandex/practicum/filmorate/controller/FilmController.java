@@ -9,39 +9,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.filmorate.exeption.ValidException;
+import ru.yandex.practicum.filmorate.manager.FilmManager;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/films")
 public class FilmController {
 
-    private Integer id = 0;
-    private final Map<Integer, Film> filmsMap = new HashMap<>();
-    private void generateId(Film film) {
-        film.setId(++id);
-    }
     private static final Logger log = LoggerFactory.getLogger(FilmController.class);
-
-
-    private ArrayList<Film> getFilms(){
-        return new ArrayList<>(filmsMap.values());
-    }
+    private static final FilmManager filmManager = new FilmManager();
 
     @GetMapping
     public ArrayList<Film> getAllFilms() {
-        return getFilms();
+        return filmManager.getAllFilms();
     }
 
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film film) throws ValidException {
-        if (filmsMap.get(film.getId()) != null) {
-            filmsMap.put(film.getId(), film);
-            log.info("Обновление фильма id: " + film.getId());
+        if (filmManager.updateFilm(film)) {
+            log.info("Добавлен фильм id: ");
         } else {
             log.info("Ошибка обновления фильма id: " + film.getId() + ", фильм не найден");
             throw new ValidException("InvalidFilmUpdate");
@@ -51,8 +40,7 @@ public class FilmController {
 
     @PostMapping
     public Film addFilm(@Valid @RequestBody Film film) {
-            generateId(film);
-            filmsMap.put(film.getId(), film);
+            filmManager.addFilm(film);
             log.info("Добавление фильма id: " + film.getId());
         return film;
     }
