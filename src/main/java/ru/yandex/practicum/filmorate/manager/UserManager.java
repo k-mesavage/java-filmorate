@@ -19,6 +19,7 @@ public class UserManager extends Manager {
     private ArrayList<User> getAll() {
         return new ArrayList<>(usersMap.values());
     }
+
     private User getUser(int id) {
         return usersMap.get(id);
     }
@@ -30,7 +31,7 @@ public class UserManager extends Manager {
     @Override
     public void addUser(User user) {
         generateId(user);
-        if(user.getName() == null) {
+        if (user.getName() == null) {
             user.setName(user.getLogin());
         }
         addUser(user.getId(), user);
