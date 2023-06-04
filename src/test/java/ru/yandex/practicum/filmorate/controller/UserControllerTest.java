@@ -24,7 +24,7 @@ class UserControllerTest {
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
     @Test
-    void ShouldGetAllUsers() throws IOException, InterruptedException {
+    void shouldGetAllUsers() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest
                 .newBuilder()
@@ -36,7 +36,7 @@ class UserControllerTest {
     }
 
     @Test
-    void ShouldAddUser() throws IOException, InterruptedException {
+    void shouldAddUser() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         User user = User.builder()
                 .login("login")
@@ -56,7 +56,7 @@ class UserControllerTest {
     }
 
     @Test
-    void ShouldAddUserWithInvalidEmail() throws IOException, InterruptedException {
+    void shouldAddUserWithInvalidEmail() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         User user = User.builder()
                 .login("login")
@@ -76,7 +76,7 @@ class UserControllerTest {
     }
 
     @Test
-    void ShouldAddUserWithEmptyLogin() throws IOException, InterruptedException {
+    void shouldAddUserWithEmptyLogin() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         User user = User.builder()
                 .login(" ")
@@ -96,7 +96,7 @@ class UserControllerTest {
     }
 
     @Test
-    void ShouldAddUserWithInvalidBirthday() throws IOException, InterruptedException {
+    void shouldAddUserWithInvalidBirthday() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         User user = User.builder()
                 .login("login")
@@ -116,7 +116,7 @@ class UserControllerTest {
     }
 
     @Test
-    void ShouldAddUserWithEmptyName() throws IOException, InterruptedException {
+    void shouldAddUserWithEmptyName() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         User user = User.builder()
                 .login("login")

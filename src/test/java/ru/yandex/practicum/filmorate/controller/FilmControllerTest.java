@@ -24,7 +24,7 @@ class FilmControllerTest {
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
     @Test
-    void ShouldGetAllFilms() throws IOException, InterruptedException {
+    void shouldGetAllFilms() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest
                 .newBuilder()
@@ -36,7 +36,7 @@ class FilmControllerTest {
     }
 
     @Test
-    void ShouldUpdateFilm() throws IOException, InterruptedException {
+    void shouldUpdateFilm() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         Film film = Film.builder()
                 .id(1)
@@ -93,7 +93,7 @@ class FilmControllerTest {
     }
 
     @Test
-    void ShouldAddFilm() throws IOException, InterruptedException {
+    void shouldAddFilm() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         Film film = Film.builder()
                 .id(1)
@@ -114,7 +114,7 @@ class FilmControllerTest {
     }
 
     @Test
-    void ShouldAddFilmWithInvalidReleaseDate() throws IOException, InterruptedException {
+    void shouldAddFilmWithInvalidReleaseDate() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         Film film = Film.builder()
                 .id(1)
@@ -135,7 +135,7 @@ class FilmControllerTest {
     }
 
     @Test
-    void ShouldAddFilmWithInvalidName() throws IOException, InterruptedException {
+    void shouldAddFilmWithInvalidName() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         Film film = Film.builder()
                 .id(1)
