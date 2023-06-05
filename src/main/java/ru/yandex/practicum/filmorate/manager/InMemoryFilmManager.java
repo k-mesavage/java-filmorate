@@ -1,12 +1,14 @@
 package ru.yandex.practicum.filmorate.manager;
 
+import ru.yandex.practicum.filmorate.exeption.ValidException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class FilmManager extends Manager {
+public class InMemoryFilmManager implements FimManager {
 
     private final Map<Integer, Film> filmsMap = new HashMap<>();
     private Integer id = 0;
@@ -16,7 +18,7 @@ public class FilmManager extends Manager {
         film.setId(id);
     }
 
-    private ArrayList<Film> getAll() {
+    private List<Film> getAll() {
         return new ArrayList<>(filmsMap.values());
     }
 
@@ -24,27 +26,31 @@ public class FilmManager extends Manager {
         return filmsMap.get(id);
     }
 
-    private void addFilm(int id, Film film) {
+    private Film addFilm(int id, Film film) {
         filmsMap.put(id, film);
+        return film;
     }
 
     @Override
-    public ArrayList<Film> getAllFilms() {
+    public List<Film> getAllFilms() {
         return getAll();
     }
 
     @Override
-    public void addFilm(Film film) {
+    public Film addFilm(Film film) {
         generateId(film);
         addFilm(film.getId(), film);
+        return film;
     }
 
     @Override
-    public Boolean updateFilm(Film film) {
+    public Film updateFilm(Film film) {
         if (getFilm(film.getId()) != null) {
             addFilm(film.getId(), film);
-            return true;
+            return film;
         }
-        return false;
+        else {
+            throw new ValidException("InvalidFilmUpdate");
+        }
     }
 }

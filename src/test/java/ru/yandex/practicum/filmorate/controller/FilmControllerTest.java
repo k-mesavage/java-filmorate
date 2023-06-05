@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -22,10 +23,23 @@ class FilmControllerTest {
     private final ObjectMapper objectMapper = new ObjectMapper()
             .findAndRegisterModules()
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    private static HttpClient client;
+
+    private static Film film;
+
+    @BeforeEach
+    void beforeEach() {
+        client = HttpClient.newHttpClient();
+        film = Film.builder()
+                .name("name")
+                .description("description")
+                .releaseDate(LocalDate.of(1999,8,20))
+                .duration(150)
+                .build();
+    }
 
     @Test
     void shouldGetAllFilms() throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest
                 .newBuilder()
                 .uri(url)
@@ -37,14 +51,6 @@ class FilmControllerTest {
 
     @Test
     void shouldUpdateFilm() throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newHttpClient();
-        Film film = Film.builder()
-                .id(1)
-                .name("name")
-                .description("description")
-                .releaseDate(LocalDate.of(1946, 8, 20))
-                .duration(150)
-                .build();
         String requestBody = objectMapper.writeValueAsString(film);
         HttpRequest request = HttpRequest
                 .newBuilder()
@@ -53,14 +59,9 @@ class FilmControllerTest {
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
         client.send(request, HttpResponse.BodyHandlers.ofString());
-        Film filmUpdate = Film.builder()
-                .id(1)
-                .name("update")
-                .description("description")
-                .releaseDate(LocalDate.of(1946, 8, 20))
-                .duration(150)
-                .build();
-        String requestBody1 = objectMapper.writeValueAsString(filmUpdate);
+        film.setId(1);
+        film.setName("update");
+        String requestBody1 = objectMapper.writeValueAsString(film);
         HttpRequest request1 = HttpRequest
                 .newBuilder()
                 .header("Content-Type", "application/json")
@@ -73,14 +74,7 @@ class FilmControllerTest {
 
     @Test
     void shouldUpdateEmptyFilm() throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newHttpClient();
-        Film film = Film.builder()
-                .id(1)
-                .name("name")
-                .description("description")
-                .releaseDate(LocalDate.of(1946, 8, 20))
-                .duration(150)
-                .build();
+        film.setId(999);
         String requestBody = objectMapper.writeValueAsString(film);
         HttpRequest request = HttpRequest
                 .newBuilder()
@@ -94,14 +88,6 @@ class FilmControllerTest {
 
     @Test
     void shouldAddFilm() throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newHttpClient();
-        Film film = Film.builder()
-                .id(1)
-                .name("name")
-                .description("description")
-                .releaseDate(LocalDate.of(1946, 8, 20))
-                .duration(150)
-                .build();
         String requestBody = objectMapper.writeValueAsString(film);
         HttpRequest request = HttpRequest
                 .newBuilder()
@@ -115,14 +101,7 @@ class FilmControllerTest {
 
     @Test
     void shouldAddFilmWithInvalidReleaseDate() throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newHttpClient();
-        Film film = Film.builder()
-                .id(1)
-                .name("name")
-                .description("description")
-                .releaseDate(LocalDate.of(1, 8, 20))
-                .duration(150)
-                .build();
+        film.setReleaseDate(LocalDate.of(1835,1,1));
         String requestBody = objectMapper.writeValueAsString(film);
         HttpRequest request = HttpRequest
                 .newBuilder()
@@ -136,14 +115,7 @@ class FilmControllerTest {
 
     @Test
     void shouldAddFilmWithInvalidName() throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newHttpClient();
-        Film film = Film.builder()
-                .id(1)
-                .name("")
-                .description("description")
-                .releaseDate(LocalDate.of(1, 8, 20))
-                .duration(150)
-                .build();
+        film.setName(" ");
         String requestBody = objectMapper.writeValueAsString(film);
         HttpRequest request = HttpRequest
                 .newBuilder()
@@ -157,14 +129,7 @@ class FilmControllerTest {
 
     @Test
     void shouldAddFilmWithInvalidDuration() throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newHttpClient();
-        Film film = Film.builder()
-                .id(1)
-                .name("name")
-                .description("description")
-                .releaseDate(LocalDate.of(1,8,20))
-                .duration(-150)
-                .build();
+        film.setDuration(-150);
         String requestBody = objectMapper.writeValueAsString(film);
         HttpRequest request = HttpRequest
                 .newBuilder()
@@ -178,16 +143,9 @@ class FilmControllerTest {
 
     @Test
     void shouldAddFilmWithInvalidDescription() throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newHttpClient();
-        Film film = Film.builder()
-                .id(1)
-                .name("name")
-                .description("descriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescription" +
-                        "descriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescription" +
-                        "descriptiondescriptiondescriptiondescriptiondescriptiondescription")
-                .releaseDate(LocalDate.of(1,8,20))
-                .duration(150)
-                .build();
+        film.setDescription("descriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescription" +
+                "descriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescription" +
+                "descriptiondescriptiondescriptiondescriptiondescriptiondescription");
         String requestBody = objectMapper.writeValueAsString(film);
         HttpRequest request = HttpRequest
                 .newBuilder()

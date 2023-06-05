@@ -9,38 +9,39 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.filmorate.exeption.ValidException;
-import ru.yandex.practicum.filmorate.manager.UserManager;
+import ru.yandex.practicum.filmorate.manager.InMemoryUserManager;
 import ru.yandex.practicum.filmorate.model.User;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-public class UserController {
+public class UserController extends InMemoryUserManager {
+
+    private static final InMemoryUserManager manager = new InMemoryUserManager();
 
     private static final Logger log = LoggerFactory.getLogger(FilmController.class);
-    private static final UserManager userManager = new UserManager();
 
     @GetMapping
-    public ArrayList<User> getAllUsers() {
-        return userManager.getAllUsers();
+    public List<User> getAllUsers() {
+        return manager.getAllUsers();
     }
 
     @PutMapping
     public User updateUser(@Valid @RequestBody User user) throws ValidException {
-        if (userManager.updateUser(user)) {
+        if (manager.updateUser(user) == user) {
             log.info("Обновление пользователя id: " + user.getId());
             return user;
         } else {
             log.info("Ошибка обновления пользователя id: " + user.getId() + ", пользователь не найден");
-            throw new ValidException("InvalidUser");
         }
+        return user;
     }
 
     @PostMapping
     public User addUser(@Valid @RequestBody User user) {
-        userManager.addUser(user);
+        manager.addUser(user);
         log.info("Добавлен пользователь id: " + user.getId());
         return user;
     }
