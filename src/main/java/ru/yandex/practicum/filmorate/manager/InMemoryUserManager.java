@@ -45,8 +45,7 @@ public class InMemoryUserManager implements UserManager {
         if (getUser(user.getId()) != null) {
             addUser(user.getId(), user);
             return user;
-        }
-        else {
+        } else {
             throw new ValidException("InvalidUser");
         }
     }

@@ -48,8 +48,7 @@ public class InMemoryFilmManager implements FimManager {
         if (getFilm(film.getId()) != null) {
             addFilm(film.getId(), film);
             return film;
-        }
-        else {
+        } else {
             throw new ValidException("InvalidFilmUpdate");
         }
     }
