@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
-import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.validator.ReleaseDate;
 
 import javax.validation.constraints.NotBlank;
@@ -12,16 +11,22 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@Component
 public class Film {
-    public Set<Integer> likes = new HashSet<>();
-    Integer id;
+    private Set<Integer> likes = new HashSet<>();
+    private Integer id;
     @NotBlank
-    String name;
+    private String name;
     @Size(max = 200)
-    String description;
+    private String description;
     @ReleaseDate
-    LocalDate releaseDate;
+    private LocalDate releaseDate;
     @Positive
-    Integer duration;
+    private Integer duration;
+
+    public Film(String name, String description, LocalDate releaseDate, Integer duration) {
+        this.name = name;
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.duration = duration;
+    }
 }

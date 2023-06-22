@@ -1,8 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,21 +18,18 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
 
     private final UserService manager;
 
-    private static final Logger log = LoggerFactory.getLogger(FilmController.class);
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.manager = userService;
-    }
 
     @GetMapping
     public List<User> getAllUsers() {
+        log.info("Получен список пользователей");
         return manager.getAllUsers();
     }
 
@@ -44,16 +40,25 @@ public class UserController {
 
     @GetMapping("/{id}/friends")
     public Set<User> getFriends(@PathVariable int id) {
+        log.info("Получен список друзей пользователя {}", id);
         return manager.getFriends(id);
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
     public Set<User> getCommon(@PathVariable int id, @PathVariable int otherId) {
+        log.info("Получен список общих друзей {} и {}", id, otherId);
         return manager.getCommonFriends(id, otherId);
     }
 
+    @PostMapping
+    public User addUser(@Valid @RequestBody User user) {
+        manager.addUser(user);
+        log.info("Добавлен пользователь {}", user);
+        return user;
+    }
+
     @PutMapping
-    public User update(@Valid @RequestBody User user) throws ValidException {
+    public User updateUser(@Valid @RequestBody User user) throws ValidException {
         if (manager.updateUser(user) == user) {
             log.info("Обновление пользователя {}", user);
             return user;
@@ -65,18 +70,13 @@ public class UserController {
 
     @PutMapping("/{id}/friends/{friendId}")
     public void putFriends(@PathVariable int id, @PathVariable int friendId) {
+        log.info("Добавление в друзья");
         manager.addFriend(id, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
     public void deleteFriends(@PathVariable int id, @PathVariable int friendId) {
+        log.info("Удаление из друзей");
         manager.deleteFriend(id, friendId);
-    }
-
-    @PostMapping
-    public User addUser(@Valid @RequestBody User user) {
-        manager.addUser(user);
-        log.info("Добавлен пользователь {}", user);
-        return user;
     }
 }

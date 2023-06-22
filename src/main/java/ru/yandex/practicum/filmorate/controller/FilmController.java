@@ -1,8 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,27 +20,24 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/films")
 public class FilmController {
 
     private final FilmService manager;
 
-    private static final Logger log = LoggerFactory.getLogger(FilmController.class);
-
-    @Autowired
-    public FilmController(FilmService filmService) {
-        this.manager = filmService;
-    }
-
     @GetMapping
     public List<Film> getAllFilms() {
+        log.info("Получены все фильмы");
         return manager.getAllFilms();
     }
 
     @GetMapping("/popular")
     public Set<Film> getPopularFilm(
             @RequestParam(value = "count", defaultValue = "10", required = false) Integer count) {
+        log.info("Получены популярные фильмы");
         return manager.getPopularFilms(count);
     }
 

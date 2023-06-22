@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -12,18 +11,24 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@Component
 public class User {
-    public Set<Integer> friends = new HashSet<>();
-    Integer id;
+    private Set<Integer> friends = new HashSet<>();
+    private Integer id;
     @Pattern(regexp = "\\S*")
     @NotBlank
-    String login;
-    String name;
+    private String login;
+    private String name;
     @NotBlank
     @Email
-    String email;
+    private String email;
     @PastOrPresent
-    LocalDate birthday;
+    private LocalDate birthday;
+
+    public User(String login, String name, String email, LocalDate birthday) {
+        this.login = login;
+        this.name = name;
+        this.email = email;
+        this.birthday = birthday;
+    }
 }
 
