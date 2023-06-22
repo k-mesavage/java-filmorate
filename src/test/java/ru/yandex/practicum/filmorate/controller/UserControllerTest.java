@@ -27,11 +27,7 @@ class UserControllerTest {
 
     @BeforeEach
     void beforeEach() {
-        user = new User(
-                "login"
-                ,"name"
-                ,"email@email.com",
-                LocalDate.of(1946, 8,20));
+        user = new User("login", "name", "email@email.com", LocalDate.of(1946, 8, 20));
     }
 
     @Test
@@ -155,11 +151,7 @@ class UserControllerTest {
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
         client.send(request, HttpResponse.BodyHandlers.ofString());
-        User update = new User(
-                "update"
-        ,"name"
-        ,"email@email.com"
-        ,LocalDate.of(1992,11,1));
+        User update = new User("update", "name", "email@email.com", LocalDate.of(1992, 11, 1));
         String requestBody1 = objectMapper.writeValueAsString(update);
         HttpRequest request1 = HttpRequest
                 .newBuilder()
