@@ -3,7 +3,7 @@
 
 ## Схема БД и примеры запросов
 <a>
-<img src="https://github.com/k-mesavage/java-filmorate/blob/main/sql_schema.jpg" />
+<img src="sql_schema.jpg" />
 </a>
 
 * получение списка всех пользователей
