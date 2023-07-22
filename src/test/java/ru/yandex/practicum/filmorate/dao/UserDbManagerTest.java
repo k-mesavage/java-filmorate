@@ -35,16 +35,22 @@ class UserDbManagerTest {
 
     @Test
     public void addUser() {
-        User newUser = new User(0, "Login", "New user name", "newEmail@mail.com"
-                , LocalDate.of(1900, 10, 10));
+        User newUser = new User(0,
+                "Login",
+                "New user name",
+                "newEmail@mail.com",
+                LocalDate.of(1900, 10, 10));
         manager.addUser(newUser);
         assertThat(manager.getAllUsers().get(3)).hasFieldOrPropertyWithValue("name", "New user name");
     }
 
     @Test
     public void updateUser() {
-        User updateUser = new User(1, "Login", "Updated user name", "UpdatedEmail@mail.com"
-                , LocalDate.of(1900, 10, 10));
+        User updateUser = new User(1,
+                "Login",
+                "Updated user name",
+                "UpdatedEmail@mail.com",
+                LocalDate.of(1900, 10, 10));
         manager.updateUser(updateUser);
         assertThat(manager.getUserById(1)).hasFieldOrPropertyWithValue("name", "Updated user name");
     }
