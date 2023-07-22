@@ -71,6 +71,7 @@ class UserDbManagerTest {
     public void getFriends() {
         assertThat(manager.getFriends(1).size()).isEqualTo(2);
     }
+
     @Test
     public void getCommonFriends() {
         manager.addToFriends(2, 3);
