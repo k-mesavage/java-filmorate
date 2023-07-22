@@ -1,11 +1,11 @@
-package ru.yandex.practicum.filmorate.manager.dao;
+package ru.yandex.practicum.filmorate.storage.dao;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exeption.NotFoundException;
-import ru.yandex.practicum.filmorate.manager.UserManager;
+import ru.yandex.practicum.filmorate.storage.UserManager;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.sql.ResultSet;
@@ -68,12 +68,12 @@ public class UserDbManager implements UserManager {
         if (user.getName() == null) {
             user.setName(user.getLogin());
         }
-        jdbcTemplate.update(UPDATE_USER
-                , user.getName()
-                , user.getEmail()
-                , user.getLogin()
-                , user.getBirthday()
-                , user.getId());
+        jdbcTemplate.update(UPDATE_USER,
+                user.getName(),
+                user.getEmail(),
+                user.getLogin(),
+                user.getBirthday(),
+                user.getId());
         return user;
     }
 
@@ -118,11 +118,11 @@ public class UserDbManager implements UserManager {
 
     private User createUser(ResultSet rs) throws SQLException {
         return new User(
-                rs.getInt("user_id")
-                , rs.getString("login")
-                , rs.getString("name")
-                , rs.getString("email")
-                , rs.getDate("birthday").toLocalDate());
+                rs.getInt("user_id"),
+                rs.getString("login"),
+                rs.getString("name"),
+                rs.getString("email"),
+                rs.getDate("birthday").toLocalDate());
     }
 
     private List<User> getFriends(String SQL_STR) {

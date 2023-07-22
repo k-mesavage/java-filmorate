@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
-import ru.yandex.practicum.filmorate.manager.dao.UserDbManager;
+import ru.yandex.practicum.filmorate.storage.dao.UserDbManager;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;

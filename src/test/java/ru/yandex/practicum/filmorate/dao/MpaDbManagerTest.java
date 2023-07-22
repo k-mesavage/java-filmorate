@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
-import ru.yandex.practicum.filmorate.manager.MpaManager;
+import ru.yandex.practicum.filmorate.storage.MpaManager;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
@@ -25,11 +25,11 @@ class MpaDbManagerTest {
 
     @Test
     public void getMpaById() {
-        assertThat(manager.getMpaById(1)).hasFieldOrPropertyWithValue("name", "G");
-        assertThat(manager.getMpaById(2)).hasFieldOrPropertyWithValue("name", "PG");
-        assertThat(manager.getMpaById(3)).hasFieldOrPropertyWithValue("name", "PG-13");
-        assertThat(manager.getMpaById(4)).hasFieldOrPropertyWithValue("name", "R");
-        assertThat(manager.getMpaById(5)).hasFieldOrPropertyWithValue("name", "NC-17");
+        assertThat(manager.getMpa(1)).hasFieldOrPropertyWithValue("name", "G");
+        assertThat(manager.getMpa(2)).hasFieldOrPropertyWithValue("name", "PG");
+        assertThat(manager.getMpa(3)).hasFieldOrPropertyWithValue("name", "PG-13");
+        assertThat(manager.getMpa(4)).hasFieldOrPropertyWithValue("name", "R");
+        assertThat(manager.getMpa(5)).hasFieldOrPropertyWithValue("name", "NC-17");
     }
 
     @Test

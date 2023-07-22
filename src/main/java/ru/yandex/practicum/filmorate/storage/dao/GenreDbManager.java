@@ -1,10 +1,10 @@
-package ru.yandex.practicum.filmorate.manager.dao;
+package ru.yandex.practicum.filmorate.storage.dao;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exeption.NotFoundException;
-import ru.yandex.practicum.filmorate.manager.GenreManager;
+import ru.yandex.practicum.filmorate.storage.GenreManager;
 import ru.yandex.practicum.filmorate.model.Genre;
 
 import java.sql.ResultSet;

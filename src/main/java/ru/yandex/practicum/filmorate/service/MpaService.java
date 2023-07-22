@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.manager.MpaManager;
+import ru.yandex.practicum.filmorate.storage.MpaManager;
 import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.util.List;
@@ -23,6 +23,6 @@ public class MpaService {
     }
 
     public Mpa getMpaById(int id) {
-        return manager.getMpaById(id);
+        return manager.getMpa(id);
     }
 }

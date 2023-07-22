@@ -1,12 +1,11 @@
-package ru.yandex.practicum.filmorate.manager.dao;
+package ru.yandex.practicum.filmorate.storage.dao;
 
 import ru.yandex.practicum.filmorate.model.Mpa;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import org.springframework.jdbc.core.JdbcTemplate;
-import ru.yandex.practicum.filmorate.manager.FilmManager;
+import ru.yandex.practicum.filmorate.storage.FilmManager;
 import org.springframework.dao.EmptyResultDataAccessException;
 import ru.yandex.practicum.filmorate.exeption.NotFoundException;
 
@@ -138,10 +137,10 @@ public class FilmDbManager implements FilmManager {
     }
 
     public void deleteLike(int id, int userId) {
-        setLike(DELETE_LIKE
-                , DELETE_LIKE_UPDATE_FILM_RATE
-                , getFilmById(id).getId()
-                , userDbManager.getUserById(userId).getId());
+        setLike(DELETE_LIKE,
+                DELETE_LIKE_UPDATE_FILM_RATE,
+                getFilmById(id).getId(),
+                userDbManager.getUserById(userId).getId());
     }
 
     public List<Film> getMostLiked(String countParam) {
@@ -165,12 +164,7 @@ public class FilmDbManager implements FilmManager {
     }
 
     private Mpa createMpa(int id) {
-        return jdbcTemplate.queryForObject(CREATE_RATING + id, new RowMapper<Mpa>() {
-            @Override
-            public Mpa mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return new Mpa(rs.getInt("rating_id"), rs.getString("rating_name"));
-            }
-        });
+        return jdbcTemplate.queryForObject(CREATE_RATING + id, (rs, rowNum) -> new Mpa(rs.getInt("rating_id"), rs.getString("rating_name")));
     }
 
     private List<Genre> createGenres(int id) {

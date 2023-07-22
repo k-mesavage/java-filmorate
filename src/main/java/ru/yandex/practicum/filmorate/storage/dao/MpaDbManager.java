@@ -1,10 +1,10 @@
-package ru.yandex.practicum.filmorate.manager.dao;
+package ru.yandex.practicum.filmorate.storage.dao;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exeption.NotFoundException;
-import ru.yandex.practicum.filmorate.manager.MpaManager;
+import ru.yandex.practicum.filmorate.storage.MpaManager;
 import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.sql.ResultSet;
@@ -50,7 +50,7 @@ public class MpaDbManager implements MpaManager {
 
 
     @Override
-    public Mpa getMpaById(int id) {
+    public Mpa getMpa(int id) {
         try {
             return jdbcTemplate.queryForObject(GET_RATING_BY_ID + id, (rs, rowNum) -> createRating(rs));
         } catch (EmptyResultDataAccessException e) {
