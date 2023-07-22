@@ -25,5 +25,4 @@ public interface UserManager {
     User getUserById(int id);
 
     int getMaxId();
-
 }
