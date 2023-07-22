@@ -36,8 +36,7 @@ public class UserService {
         if (users.getUserById(user.getId()) != null) {
             users.updateUser(user);
             log.info("Update User {}", user.getId());
-        }
-        else throw new NotFoundException("UpdateUserException");
+        } else throw new NotFoundException("UpdateUserException");
         return users.getUserById(user.getId());
     }
 
