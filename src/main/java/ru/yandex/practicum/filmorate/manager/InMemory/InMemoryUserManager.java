@@ -84,7 +84,7 @@ public class InMemoryUserManager implements UserManager {
                 .filter(user -> user.getFriends().contains(id) && user.getFriends().contains(friendId))
                 .collect(Collectors.toList());
     }
-    
+
     @Override
     public User getUserById(int id) {
         return usersMap.get(id);
