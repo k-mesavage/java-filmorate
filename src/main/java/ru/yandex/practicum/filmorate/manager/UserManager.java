@@ -12,5 +12,18 @@ public interface UserManager {
 
     User updateUser(User user);
 
+    void deleteUser(int id);
+
+    void addToFriends(int id, int friendId);
+
+    void deleteFromFriends(int id, int friendId);
+
+    List<User> getFriends(int id);
+
+    List<User> getCommonFriends(int id, int friendId);
+
+    User getUserById(int id);
+
+    int getMaxId();
 
 }
