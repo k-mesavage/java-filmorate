@@ -33,5 +33,4 @@ public class MpaController {
         log.info("Get MPA: {}", answer);
         return answer;
     }
-
 }
