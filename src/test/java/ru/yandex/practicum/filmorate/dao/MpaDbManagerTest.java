@@ -38,7 +38,7 @@ class MpaDbManagerTest {
     }
 
     @Test
-    public void getMpaIds() {
+    public void getMpaIds() { 
         assertThat(manager.getMpaIds().size()).isEqualTo(5);
     }
 }
