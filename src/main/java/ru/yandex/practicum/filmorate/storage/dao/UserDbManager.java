@@ -92,10 +92,9 @@ public class UserDbManager implements UserManager {
     }
 
     public List<User> getFriends(int id) {
-        String GET = "SELECT u.* FROM users u JOIN friends f ON u.user_id = f.friend_id " +
+        final String GET = "SELECT u.* FROM users u JOIN friends f ON u.user_id = f.friend_id " +
                 "WHERE f.user_id = " +
-                id + " UNION SELECT u.*" +
-                "FROM users u JOIN friends f ON u.user_id = f.user_id WHERE f.friend_id = " +
+                id + " UNION SELECT u.* FROM users u JOIN friends f ON u.user_id = f.user_id WHERE f.friend_id = " +
                 id + " AND f.user_id = " +
                 id;
         return getFriends(GET);
@@ -107,16 +106,14 @@ public class UserDbManager implements UserManager {
                 "JOIN friends f ON u.user_id = f.friend_id " +
                 "WHERE (f.user_id = " +
                 id + " OR f.user_id = " +
-                friendId + ") " +
-                "AND NOT (f.friend_id = " +
+                friendId + ") AND NOT (f.friend_id = " +
                 id + " OR f.friend_id = " +
-                friendId + ") " +
-                "GROUP BY u.user_id";
+                friendId + ") GROUP BY u.user_id";
         return getFriends(sql);
     }
 
     public int getMaxId() {
-        Integer maxId = jdbcTemplate.queryForObject(GET_MAX_ID, (rs, rowNum) -> rs.getInt("maxId"));
+        final Integer maxId = jdbcTemplate.queryForObject(GET_MAX_ID, (rs, rowNum) -> rs.getInt("maxId"));
         if (maxId != null) {
             return maxId;
         }
@@ -138,8 +135,8 @@ public class UserDbManager implements UserManager {
 
     @NotNull
     private List<User> getUsers(String SQL_STR) {
-        List<User> friends = new ArrayList<>();
-        Optional<List<User>> friendsOpt = jdbcTemplate.query(SQL_STR, (rs, rowNum) -> {
+        final List<User> friends = new ArrayList<>();
+        final Optional<List<User>> friendsOpt = jdbcTemplate.query(SQL_STR, (rs, rowNum) -> {
             do {
                 friends.add(createUser(rs));
             } while (rs.next());

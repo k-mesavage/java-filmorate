@@ -26,8 +26,8 @@ public class GenreDbManager implements GenreManager {
 
     @Override
     public List<Genre> getAllGenres() {
-        List<Genre> genres = new ArrayList<>();
-        Optional<List<Genre>> genresOpt = jdbcTemplate.query(GET_GENRES, (rs, rowNum) -> {
+        final List<Genre> genres = new ArrayList<>();
+        final Optional<List<Genre>> genresOpt = jdbcTemplate.query(GET_GENRES, (rs, rowNum) -> {
             do {
                 genres.add(createGenre(rs));
             } while (rs.next());

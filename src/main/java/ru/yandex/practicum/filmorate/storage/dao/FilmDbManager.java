@@ -51,7 +51,7 @@ public class FilmDbManager implements FilmManager {
 
     @Override
     public List<Film> getAllFilms() {
-        List<Film> films = new ArrayList<>();
+        final List<Film> films = new ArrayList<>();
         try {
             return jdbcTemplate.queryForObject(GET_FILMS, (rs, rowNum) -> {
                 do {
@@ -113,7 +113,7 @@ public class FilmDbManager implements FilmManager {
     }
 
     private Set<Integer> createLikes(int id) {
-        Set<Integer> likes = new HashSet<>();
+        final Set<Integer> likes = new HashSet<>();
         try {
             return jdbcTemplate.queryForObject(CREATE_LIKES + id, (rs, rowNum) -> {
                 do {
@@ -143,8 +143,8 @@ public class FilmDbManager implements FilmManager {
     }
 
     public List<Film> getMostLiked(String countParam) {
-        List<Film> mostLiked = new ArrayList<>();
-        Optional<List<Film>> mostLikedOpt = jdbcTemplate.query(GET_MOST_LIKED + countParam, (rs, rowNum) -> {
+        final List<Film> mostLiked = new ArrayList<>();
+        final Optional<List<Film>> mostLikedOpt = jdbcTemplate.query(GET_MOST_LIKED + countParam, (rs, rowNum) -> {
             do {
                 mostLiked.add(createFilm(rs));
             } while (rs.next());
@@ -155,7 +155,7 @@ public class FilmDbManager implements FilmManager {
     }
 
     public int getMaxId() {
-        Integer maxId = jdbcTemplate.queryForObject(GET_MAX_ID, (rs, rowNum) -> rs.getInt("maxId"));
+        final Integer maxId = jdbcTemplate.queryForObject(GET_MAX_ID, (rs, rowNum) -> rs.getInt("maxId"));
         if (maxId != null) {
             return maxId;
         }
@@ -163,17 +163,18 @@ public class FilmDbManager implements FilmManager {
     }
 
     private Mpa createMpa(int id) {
-        return jdbcTemplate.queryForObject(CREATE_RATING + id, (rs, rowNum) -> new Mpa(rs.getInt("rating_id"), rs.getString("rating_name")));
+        return jdbcTemplate.queryForObject(CREATE_RATING + id, (rs, rowNum) ->
+                new Mpa(rs.getInt("rating_id"), rs.getString("rating_name")));
     }
 
     private List<Genre> createGenres(int id) {
-        List<Genre> genres = new ArrayList<>();
-        Optional<List<Genre>> genresOpt = jdbcTemplate.query(CREATE_GENRES + id, (rs, rowNum) -> {
+        final List<Genre> genres = new ArrayList<>();
+        final Optional<List<Genre>> genresOpt = jdbcTemplate.query(CREATE_GENRES + id, (rs, rowNum) -> {
             do {
                 genres.add(new Genre(rs.getInt("genre_id"), rs.getString("genre_name")));
             } while (rs.next());
 
-            HashMap<Integer, Genre> map = new HashMap<>();
+            final HashMap<Integer, Genre> map = new HashMap<>();
             for (Genre genre : genres) {
                 int genreId = genre.getId();
                 map.putIfAbsent(genreId, genre);

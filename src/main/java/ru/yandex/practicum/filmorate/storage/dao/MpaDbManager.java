@@ -23,7 +23,7 @@ public class MpaDbManager implements MpaManager {
     }
 
     private static final String GET_RATINGS = "SELECT * FROM rating";
-    private static final String GET_RATING_BY_ID = "select * from rating where rating_id = ";
+    private static final String GET_RATING_BY_ID = "SELECT * FROM rating where rating_id = ";
     private static final String GET_MPA_IDS = "SELECT rating_id FROM rating";
 
 
@@ -37,8 +37,8 @@ public class MpaDbManager implements MpaManager {
 
     @Override
     public List<Mpa> getMpa() {
-        List<Mpa> ratings = new ArrayList<>();
-        Optional<List<Mpa>> ratingOpt = jdbcTemplate.query(GET_RATINGS, (rs, rowNum) -> {
+        final List<Mpa> ratings = new ArrayList<>();
+        final Optional<List<Mpa>> ratingOpt = jdbcTemplate.query(GET_RATINGS, (rs, rowNum) -> {
             do {
                 ratings.add(createRating(rs));
             } while (rs.next());
