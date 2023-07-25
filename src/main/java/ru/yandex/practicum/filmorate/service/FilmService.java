@@ -1,34 +1,27 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exeption.NotFoundException;
 import ru.yandex.practicum.filmorate.exeption.ValidationException;
 import ru.yandex.practicum.filmorate.storage.FilmManager;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.validator.FilmValidator;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Service
+@AllArgsConstructor
 public class FilmService {
-    FilmManager films;
-    FilmValidator validator;
 
-    @Autowired
-    private FilmService(@Qualifier("FilmDbManager") FilmManager filmManager, FilmValidator validator) {
-        this.films = filmManager;
-        this.validator = validator;
-    }
+    @Qualifier("FilmDbManager")
+    private FilmManager films;
 
     public Film addFilm(Film film) {
-        FilmValidator.validate(film);
-        films.addFilm(film);
-        return films.getFilmById(film.getId());
+         return films.addFilm(film);
     }
 
     public Film getFilm(int id) {
@@ -37,9 +30,7 @@ public class FilmService {
 
     public Film updateFilm(Film film) {
         if (films.getFilmById(film.getId()) != null) {
-            FilmValidator.validate(film);
-            films.updateFilm(film);
-            return film;
+            return films.updateFilm(film);
         } else throw new NotFoundException("Film Not Found");
     }
 

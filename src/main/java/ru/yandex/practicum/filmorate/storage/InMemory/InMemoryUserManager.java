@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.storage.InMemory;
 
-import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exeption.ValidationException;
 import ru.yandex.practicum.filmorate.storage.UserManager;
 import ru.yandex.practicum.filmorate.model.User;
@@ -8,7 +7,6 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Component("InMemoryUserManager")
 public class InMemoryUserManager implements UserManager {
 
     private Integer id = 0;

@@ -14,21 +14,19 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 public class Film {
-    Integer id;
+    private Integer id;
     @NotBlank
-    String name;
+    private String name;
     @Size(max = 200)
-    String description;
+    private String description;
     @ReleaseDate
-    LocalDate releaseDate;
+    private LocalDate releaseDate;
     @Positive
-    Integer duration;
-    Integer rate;
-    Set<Integer> likes;
-    Mpa mpa;
-    List<Genre> genres;
+    private Integer duration;
+    private Integer rate;
+    private Set<Integer> likes;
+    private Mpa mpa;
+    private List<Genre> genres;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+
 }

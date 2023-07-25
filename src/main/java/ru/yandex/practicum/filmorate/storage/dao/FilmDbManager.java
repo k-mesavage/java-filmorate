@@ -18,7 +18,6 @@ public class FilmDbManager implements FilmManager {
 
     private static final String GET_FILMS = "SELECT * FROM films";
     private static final String ADD_FILM = "INSERT INTO films(name, description, release_date, duration, rate, rating_id) VALUES(?, ?, ?, ?, ?, ?)";
-    private static final String ADD_FILM_UPDATE_GENRE = "INSERT INTO film_genre_list(film_id, genre_id) VALUES(?, ?)";
     private static final String UPDATE_FILM = "UPDATE films SET name = ?, description = ?, release_date = ?, duration = ?, rate = ?, rating_id = ? WHERE film_id = ?";
     private static final String UPDATE_FILM_GENRE_DEL = "DELETE FROM film_genre_list WHERE film_id = ?";
     private static final String UPDATE_FILM_GENRE_ADD = "INSERT INTO film_genre_list(film_id, genre_id) VALUES(?, ?)";
@@ -90,7 +89,7 @@ public class FilmDbManager implements FilmManager {
                     .distinct()
                     .forEach(integer -> jdbcTemplate.update(UPDATE_FILM_GENRE_ADD, film.getId(), integer));
         }
-        return film;
+        return getFilmById(film.getId());
     }
 
     @Override

@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.storage.InMemory;
 
-import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exeption.ValidationException;
 import ru.yandex.practicum.filmorate.storage.FilmManager;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -8,7 +7,6 @@ import ru.yandex.practicum.filmorate.model.Film;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Component("inMemoryFilmManager")
 public class InMemoryFilmManager implements FilmManager {
 
     private final Map<Integer, Film> filmsMap = new HashMap<>();

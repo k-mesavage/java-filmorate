@@ -10,9 +10,7 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Component("UserDbManager")
@@ -23,7 +21,7 @@ public class UserDbManager implements UserManager {
     private static final String DELETE_USER = "DELETE FROM users WHERE user_id = ?";
     private static final String ADD_TO_FRIENDS = "INSERT INTO friends(user_id, friend_id) VALUES (?, ?)";
     private static final String DELETE_FROM_FRIENDS = "DELETE FROM friends WHERE user_id = ? AND friend_id = ?";
-    private static final String GET_USER_BY_ID = "SELECT * FROM users WHERE user_id = ";
+    private static final String GET_USER_BY_ID = "SELECT * FROM users WHERE user_id = ?";
     private static final String GET_MAX_ID = "SELECT max(user_id) as maxId FROM users;";
 
     private final JdbcTemplate jdbcTemplate;
@@ -64,17 +62,20 @@ public class UserDbManager implements UserManager {
 
     @Override
     public User updateUser(User user) {
-        jdbcTemplate.query(GET_USER_BY_ID + user.getId(), (rs, rowNum) -> createUser(rs)).get(0);
         if (user.getName() == null) {
             user.setName(user.getLogin());
         }
-        jdbcTemplate.update(UPDATE_USER,
-                user.getName(),
-                user.getEmail(),
-                user.getLogin(),
-                user.getBirthday(),
-                user.getId());
-        return user;
+        try {
+            jdbcTemplate.update(UPDATE_USER,
+                    user.getName(),
+                    user.getEmail(),
+                    user.getLogin(),
+                    user.getBirthday(),
+                    user.getId());
+            return user;
+        } catch (IndexOutOfBoundsException e) {
+            throw new NotFoundException("User Not Found");
+        }
     }
 
     @Override
@@ -91,21 +92,21 @@ public class UserDbManager implements UserManager {
     }
 
     public List<User> getFriends(int id) {
-        final String GET_FRIENDS = "select * from users u where u.user_id in (select friend_id from friends where user_id = "
-                + id + " union select user_id from friends where friend_id = "
-                + id + "  and user_id = "
-                + id + ")";
-        return getFriends(GET_FRIENDS);
+        String GET = "SELECT u.* FROM users u JOIN friends f ON u.user_id = f.friend_id " +
+                "WHERE f.user_id = " + id + " UNION SELECT u.*" +
+                "FROM users u JOIN friends f ON u.user_id = f.user_id WHERE f.friend_id = "
+        + id + " AND f.user_id = " + id;
+        return getFriends(GET);
     }
 
     public List<User> getCommonFriends(int id, int friendId) {
-        final String GET_COMMON_FRIENDS
-                = "select * from users u where u.user_id in (select friend_id from friends f where (f.user_id = "
-                + id + " or f.user_id = "
-                + friendId + ") and not (friend_id = "
-                + id + " or friend_id = "
-                + friendId + ") group by friend_id);";
-        return getFriends(GET_COMMON_FRIENDS);
+        final String sql = "SELECT u.* " +
+                "FROM users u " +
+                "JOIN friends f ON u.user_id = f.friend_id " +
+                "WHERE (f.user_id = " + id + " OR f.user_id = " + friendId + ") " +
+                "    AND NOT (f.friend_id = " + id + " OR f.friend_id = " + friendId + ") " +
+                "GROUP BY u.user_id";
+        return getFriends(sql);
     }
 
     public int getMaxId() {
@@ -125,8 +126,8 @@ public class UserDbManager implements UserManager {
                 rs.getDate("birthday").toLocalDate());
     }
 
-    private List<User> getFriends(String SQL_STR) {
-        return getUsers(SQL_STR);
+    private List<User> getFriends(String sql) {
+        return getUsers(sql);
     }
 
     @NotNull

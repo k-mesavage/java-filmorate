@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exeption.NotFoundException;
 import ru.yandex.practicum.filmorate.storage.UserManager;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.validator.UserValidator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,24 +14,20 @@ import java.util.List;
 @Slf4j
 @Service
 public class UserService {
-    UserManager users;
-    UserValidator validator;
+    private final UserManager users;
 
     @Autowired
-    private UserService(@Qualifier("UserDbManager") UserManager userManager, UserValidator validator) {
+    private UserService(@Qualifier("UserDbManager") UserManager userManager) {
         this.users = userManager;
-        this.validator = validator;
     }
 
     public User addUser(User user) {
-        validator.validate(user);
         users.addUser(user);
         log.info("Add User {}", user.getId());
         return users.getUserById(users.getMaxId());
     }
 
     public User updateUser(User user) {
-        validator.validate(user);
         if (users.getUserById(user.getId()) != null) {
             users.updateUser(user);
             log.info("Update User {}", user.getId());
@@ -48,18 +43,16 @@ public class UserService {
         return users.getUserById(id);
     }
 
-    public User addToFriends(int id, int friendId) {
+    public void addToFriends(int id, int friendId) {
         if (users.getUserById(id) != null && users.getUserById(friendId) != null) {
             users.addToFriends(id, friendId);
             log.info("Add To Friends {}, {}", id, friendId);
-            return users.getUserById(id);
         } else throw new NotFoundException("User Not Found");
     }
 
-    public User deleteFromFriends(int id, int friendId) {
+    public void deleteFromFriends(int id, int friendId) {
         users.deleteFromFriends(id, friendId);
         log.info("Delete From Friends {}, {}", id, friendId);
-        return users.getUserById(id);
     }
 
     public List<User> getFriends(int id) {

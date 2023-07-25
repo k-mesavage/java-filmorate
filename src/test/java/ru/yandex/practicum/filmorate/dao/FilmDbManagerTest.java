@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.dao;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,6 +28,28 @@ class FilmDbManagerTest {
     @Autowired
     @Qualifier("FilmDbManager")
     private FilmManager manager;
+    private Film newFilm;
+    private Film updatedFilm;
+
+    @BeforeEach
+    public void beforeEach() {
+        newFilm = new Film(0,
+                "New Film Name",
+                "New Description",
+                LocalDate.of(1900, 10, 10),100,
+                2,
+                null,
+                new Mpa(1, "G"),
+                new ArrayList<>(Arrays.asList(new Genre(1, "Комедия"), new Genre(2, "Драма"))));
+
+        updatedFilm = new Film(1,"Updated Film Name",
+                "Updated Description",LocalDate.of(2000, 11, 11),
+                100,
+                2,
+                null,
+                new Mpa(1, "G"),
+                new ArrayList<>(List.of(new Genre(1, "Комедия"))));
+    }
 
     @Test
     public void testFilmManager() {
@@ -40,27 +63,12 @@ class FilmDbManagerTest {
 
     @Test
     public void addFilm() {
-        Film newFilm = new Film(0,
-                "New Film Name",
-                "New Description",
-                LocalDate.of(1900, 10, 10),100,
-                2,
-                null,
-                new Mpa(1, "G"),
-                new ArrayList<>(Arrays.asList(new Genre(1, "Комедия"), new Genre(2, "Драма"))));
         manager.addFilm(newFilm);
         assertThat(manager.getFilmById(3)).hasFieldOrPropertyWithValue("name", "New Film Name");
     }
 
     @Test
     public void updateFilm() {
-        Film updatedFilm = new Film(1,"Updated Film Name",
-                "Updated Description",LocalDate.of(2000, 11, 11),
-                100,
-                2,
-                null,
-                new Mpa(1, "G"),
-                new ArrayList<>(List.of(new Genre(1, "Комедия"))));
         manager.updateFilm(updatedFilm);
         assertThat(manager.getFilmById(1))
                 .hasFieldOrPropertyWithValue("name", "Updated Film Name");

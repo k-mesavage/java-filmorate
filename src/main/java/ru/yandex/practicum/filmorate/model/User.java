@@ -16,15 +16,15 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 public class User {
-    Integer id;
+    private Integer id;
     @Pattern(regexp = "\\S*")
     @NotBlank
-    String login;
-    String name;
+    private String login;
+    private String name;
     @NotBlank
     @Email
-    String email;
+    private String email;
     @PastOrPresent
-    LocalDate birthday;
+    private LocalDate birthday;
     private final Set<Integer> friends = new HashSet<>();
 }
