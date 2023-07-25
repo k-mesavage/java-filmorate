@@ -21,7 +21,7 @@ public class UserDbManager implements UserManager {
     private static final String DELETE_USER = "DELETE FROM users WHERE user_id = ?";
     private static final String ADD_TO_FRIENDS = "INSERT INTO friends(user_id, friend_id) VALUES (?, ?)";
     private static final String DELETE_FROM_FRIENDS = "DELETE FROM friends WHERE user_id = ? AND friend_id = ?";
-    private static final String GET_USER_BY_ID = "SELECT * FROM users WHERE user_id = ?";
+    private static final String GET_USER_BY_ID = "SELECT * FROM users WHERE user_id = ";
     private static final String GET_MAX_ID = "SELECT max(user_id) as maxId FROM users;";
 
     private final JdbcTemplate jdbcTemplate;
@@ -92,11 +92,11 @@ public class UserDbManager implements UserManager {
     }
 
     public List<User> getFriends(int id) {
-        final String GET = "SELECT u.* FROM users u JOIN friends f ON u.user_id = f.friend_id WHERE f.user_id = " +
-                id +
-                " UNION SELECT u.* FROM users u JOIN friends f ON u.user_id = f.user_id WHERE f.friend_id = " +
-                id +
-                " AND f.user_id = " +
+        String GET = "SELECT u.* FROM users u JOIN friends f ON u.user_id = f.friend_id " +
+                "WHERE f.user_id = " +
+                id + " UNION SELECT u.*" +
+                "FROM users u JOIN friends f ON u.user_id = f.user_id WHERE f.friend_id = " +
+                id + " AND f.user_id = " +
                 id;
         return getFriends(GET);
     }
@@ -105,8 +105,12 @@ public class UserDbManager implements UserManager {
         final String sql = "SELECT u.* " +
                 "FROM users u " +
                 "JOIN friends f ON u.user_id = f.friend_id " +
-                "WHERE (f.user_id = " + id + " OR f.user_id = " + friendId + ") " +
-                "    AND NOT (f.friend_id = " + id + " OR f.friend_id = " + friendId + ") " +
+                "WHERE (f.user_id = " +
+                id + " OR f.user_id = " +
+                friendId + ") " +
+                "AND NOT (f.friend_id = " +
+                id + " OR f.friend_id = " +
+                friendId + ") " +
                 "GROUP BY u.user_id";
         return getFriends(sql);
     }
