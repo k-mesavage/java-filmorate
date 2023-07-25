@@ -92,10 +92,12 @@ public class UserDbManager implements UserManager {
     }
 
     public List<User> getFriends(int id) {
-        String GET = "SELECT u.* FROM users u JOIN friends f ON u.user_id = f.friend_id " +
-                "WHERE f.user_id = " + id + " UNION SELECT u.*" +
-                "FROM users u JOIN friends f ON u.user_id = f.user_id WHERE f.friend_id = "
-        + id + " AND f.user_id = " + id;
+        final String GET = "SELECT u.* FROM users u JOIN friends f ON u.user_id = f.friend_id WHERE f.user_id = " +
+                id +
+                " UNION SELECT u.* FROM users u JOIN friends f ON u.user_id = f.user_id WHERE f.friend_id = " +
+                id +
+                " AND f.user_id = " +
+                id;
         return getFriends(GET);
     }
 
