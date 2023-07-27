@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.storage.dao;
 
+import lombok.RequiredArgsConstructor;
 import ru.yandex.practicum.filmorate.model.Mpa;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -14,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Component("FilmDbManager")
+@RequiredArgsConstructor
 public class FilmDbManager implements FilmManager {
 
     private static final String GET_FILMS = "SELECT * FROM films";
@@ -36,12 +38,7 @@ public class FilmDbManager implements FilmManager {
 
     private final UserDbManager userDbManager;
 
-    Integer id = 0;
-
-    public FilmDbManager(JdbcTemplate jdbcTemplate, UserDbManager userDbManager) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.userDbManager = userDbManager;
-    }
+    private Integer id = 0;
 
     @Override
     public void generateId(Film film) {

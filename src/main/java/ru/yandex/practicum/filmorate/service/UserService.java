@@ -22,17 +22,14 @@ public class UserService {
     }
 
     public User addUser(User user) {
-        users.addUser(user);
         log.info("Add User {}", user.getId());
-        return users.getUserById(users.getMaxId());
+        return users.addUser(user);
     }
 
     public User updateUser(User user) {
         if (users.getUserById(user.getId()) != null) {
-            users.updateUser(user);
-            log.info("Update User {}", user.getId());
-        } else throw new NotFoundException("UpdateUserException");
-        return users.getUserById(user.getId());
+            return users.updateUser(user);
+        } else throw new NotFoundException("User Not Found");
     }
 
     public void deleteUser(int id) {

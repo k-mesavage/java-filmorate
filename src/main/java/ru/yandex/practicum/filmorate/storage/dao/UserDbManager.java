@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.storage.dao;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,6 +15,7 @@ import java.util.*;
 
 @Slf4j
 @Component("UserDbManager")
+@RequiredArgsConstructor
 public class UserDbManager implements UserManager {
     private static final String GET_USERS = "SELECT * FROM users";
     private static final String ADD_USER = "INSERT INTO users(name, email, login, birthday) VALUES(?, ?, ?, ?)";
@@ -26,11 +28,7 @@ public class UserDbManager implements UserManager {
 
     private final JdbcTemplate jdbcTemplate;
 
-    Integer id = 0;
-
-    public UserDbManager(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    private Integer id = 0;
 
     private void generateId(User user) {
         ++id;
