@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.io.IOException;
 import java.net.URI;
@@ -13,6 +14,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -29,7 +32,15 @@ class FilmControllerTest {
     @BeforeEach
     void beforeEach() {
         client = HttpClient.newHttpClient();
-        film = new Film("name", "desc", LocalDate.of(1999,12,12), 150);
+        film = new Film(1,
+                "name",
+                "desc",
+                LocalDate.now().minusDays(1),
+                130,
+                1,
+                Set.of(1),
+                new Mpa(1,"name"),
+                new ArrayList<>());
     }
 
     @Test

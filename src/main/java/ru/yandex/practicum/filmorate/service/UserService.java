@@ -1,68 +1,69 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exeption.NotFoundException;
+import ru.yandex.practicum.filmorate.storage.UserManager;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
+@Slf4j
 @Service
-@AllArgsConstructor
 public class UserService {
+    private final UserManager users;
 
-    private InMemoryUserStorage userStorage;
-
-    public List<User> getAllUsers() {
-        return new ArrayList<>(userStorage.getAllUsers());
-    }
-
-    public User getUserById(int id) {
-        return userStorage.getUserById(id);
+    @Autowired
+    private UserService(@Qualifier("UserDbManager") UserManager userManager) {
+        this.users = userManager;
     }
 
     public User addUser(User user) {
-        return userStorage.addUser(user);
+        log.info("Add User {}", user.getId());
+        return users.addUser(user);
     }
 
     public User updateUser(User user) {
-        return userStorage.updateUser(user);
+        if (users.getUserById(user.getId()) != null) {
+            return users.updateUser(user);
+        } else throw new NotFoundException("User Not Found");
     }
 
-    public void addFriend(int friend1Id, int friend2Id) {
-        User friend1 = userStorage.getUserById(friend1Id);
-        User friend2 = userStorage.getUserById(friend2Id);
-        friend1.getFriends().add(friend2Id);
-        friend2.getFriends().add(friend1Id);
-        updateUser(friend1);
-        updateUser(friend2);
+    public void deleteUser(int id) {
+        users.deleteUser(id);
     }
 
-    public void deleteFriend(int friend1Id, int friend2Id) {
-        User friend1 = userStorage.getUserById(friend1Id);
-        User friend2 = userStorage.getUserById(friend2Id);
-        friend1.getFriends().remove(friend2.getId());
-        friend2.getFriends().remove(friend1.getId());
-        updateUser(friend1);
-        updateUser(friend2);
+    public User getUserById(int id) {
+        return users.getUserById(id);
     }
 
-    public Set<User> getCommonFriends(int friend1Id, int friend2Id) {
-        User friend1 = userStorage.getUserById(friend1Id);
-        User friend2 = userStorage.getUserById(friend2Id);
-        return friend1.getFriends().stream()
-                .filter(f -> friend2.getFriends().contains(f))
-                .map(userStorage::getUserById)
-                .collect(Collectors.toSet());
+    public void addToFriends(int id, int friendId) {
+        if (users.getUserById(id) != null && users.getUserById(friendId) != null) {
+            users.addToFriends(id, friendId);
+            log.info("Add To Friends {}, {}", id, friendId);
+        } else throw new NotFoundException("User Not Found");
     }
 
-    public Set<User> getFriends(int userId) {
-        User user = userStorage.getUserById(userId);
-        return user.getFriends().stream()
-                .map(userStorage::getUserById)
-                .collect(Collectors.toSet());
+    public void deleteFromFriends(int id, int friendId) {
+        users.deleteFromFriends(id, friendId);
+        log.info("Delete From Friends {}, {}", id, friendId);
+    }
+
+    public List<User> getFriends(int id) {
+        log.info("Get friends {}", id);
+        return users.getFriends(id);
+    }
+
+    public List<User> getCommonFriends(int id, int friendId) {
+        log.info("Get Common Friends {}, {}", id, friendId);
+        return users.getCommonFriends(id, friendId);
+    }
+
+    public List<User> getAllUsers() {
+        log.info("Get All Users");
+        return new ArrayList<>(users.getAllUsers());
     }
 }

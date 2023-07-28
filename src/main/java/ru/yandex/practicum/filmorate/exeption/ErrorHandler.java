@@ -12,7 +12,7 @@ import ru.yandex.practicum.filmorate.model.ErrorResponse;
 public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleMethodArgumentNotValidException(final ValidException e) {
+    public ErrorResponse handleMethodArgumentNotValidException(final ValidationException e) {
         log.warn("Validation: {}", e.getMessage());
         return new ErrorResponse(e.getMessage());
     }

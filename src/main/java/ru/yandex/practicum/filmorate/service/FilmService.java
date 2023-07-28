@@ -1,60 +1,58 @@
 package ru.yandex.practicum.filmorate.service;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exeption.HandleNotFoundException;
+import ru.yandex.practicum.filmorate.exeption.NotFoundException;
+import ru.yandex.practicum.filmorate.exeption.ValidationException;
+import ru.yandex.practicum.filmorate.storage.FilmManager;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class FilmService {
-    private InMemoryFilmStorage inMemoryFilmStorage;
-    private InMemoryUserStorage inMemoryUserStorage;
 
-    public List<Film> getAllFilms() {
-        return new ArrayList<>(inMemoryFilmStorage.getAllFilms());
-    }
+    @Qualifier("FilmDbManager")
+    private FilmManager films;
 
     public Film addFilm(Film film) {
-        return inMemoryFilmStorage.addFilm(film);
+         return films.addFilm(film);
+    }
+
+    public Film getFilm(int id) {
+        return films.getFilmById(id);
     }
 
     public Film updateFilm(Film film) {
-        return inMemoryFilmStorage.updateFilm(film);
+        if (films.getFilmById(film.getId()) != null) {
+            return films.updateFilm(film);
+        } else throw new NotFoundException("Film Not Found");
     }
 
-    public Film getFilmById(int id) {
-        return inMemoryFilmStorage.getFilmById(id);
+    public List<Film> getAllFilms() {
+        return new ArrayList<>(films.getAllFilms());
     }
 
-    public void addLike(int filmId, int userId) {
-        Film film = inMemoryFilmStorage.getFilmById(filmId);
-        film.getLikes().add(userId);
-        inMemoryFilmStorage.updateFilm(film);
+    public Film addLike(int id, int userId) {
+        films.addLike(id, userId);
+        return films.getFilmById(id);
     }
 
-    public void deleteLike(int filmId, int userId) {
-        if (inMemoryUserStorage.getUserById(userId) != null) {
-            Film film = inMemoryFilmStorage.getFilmById(filmId);
-            film.getLikes().remove(userId);
-            inMemoryFilmStorage.updateFilm(film);
-        } else throw new HandleNotFoundException("User Not Found");
+    public Film deleteLike(int id, int userId) {
+        films.deleteLike(id, userId);
+        return films.getFilmById(id);
     }
 
-    public Set<Film> getPopularFilms(Integer count) {
-        if (inMemoryFilmStorage.getAllFilms().size() != 0)
-            return inMemoryFilmStorage.getAllFilms()
-                    .stream()
-                    .sorted((f1, f2) -> f2.getLikes().size() - f1.getLikes().size())
-                    .limit(count)
-                    .collect(Collectors.toSet());
-        return Set.of();
+    public List<Film> getMostLiked(String countParam) {
+        int count = Integer.parseInt(countParam);
+        if (count < 0) {
+            throw new ValidationException("MostLikedException");
+        }
+        return films.getMostLiked(countParam);
     }
 }
