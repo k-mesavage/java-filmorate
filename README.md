@@ -1,6 +1,8 @@
 # java-filmorate
 Репозиторий шаблонов для проекта Filmorate.
 
+![kandinsky-download-1696760013544.jpg](kandinsky-download-1696760013544.jpg)
+
 ## Схема БД и примеры запросов
 <a>
 <img src="sql_schema.jpg" />

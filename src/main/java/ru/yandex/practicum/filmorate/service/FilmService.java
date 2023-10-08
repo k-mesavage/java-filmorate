@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exeption.NotFoundException;
 import ru.yandex.practicum.filmorate.exeption.ValidationException;
@@ -17,7 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 public class FilmService {
 
-    @Qualifier("FilmDbManager")
     private FilmManager films;
 
     public Film addFilm(Film film) {

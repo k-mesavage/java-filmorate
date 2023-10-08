@@ -30,7 +30,7 @@ public class UserDbManager implements UserManager {
 
     private Integer id = 0;
 
-    private void generateId(User user) { 
+    private void generateId(User user) {
         ++id;
         user.setId(id);
     }

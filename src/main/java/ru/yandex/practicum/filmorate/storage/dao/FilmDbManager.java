@@ -23,7 +23,7 @@ public class FilmDbManager implements FilmManager {
     private static final String UPDATE_FILM = "UPDATE films SET name = ?, description = ?, release_date = ?, duration = ?, rate = ?, rating_id = ? WHERE film_id = ?";
     private static final String UPDATE_FILM_GENRE_DEL = "DELETE FROM film_genre_list WHERE film_id = ?";
     private static final String UPDATE_FILM_GENRE_ADD = "INSERT INTO film_genre_list(film_id, genre_id) VALUES(?, ?)";
-    private static final String GET_FILM_BY_ID = "SELECT * FROM films WHERE film_id=";
+    private static final String GET_FILM_BY_ID = "SELECT F.*, R.rating_name FROM films f JOIN RATING R on f.RATING_ID = R.RATING_ID WHERE film_id=";
     private static final String SET_LIKE = "INSERT INTO likes(film_id, user_id) VALUES(?, ?)";
     private static final String SET_LIKE_UPDATE_FILM_RATE = "UPDATE films SET rate = rate + 1 WHERE film_id = ?";
     private static final String DELETE_LIKE = "DELETE FROM likes WHERE film_id = ? AND user_id = ?";
