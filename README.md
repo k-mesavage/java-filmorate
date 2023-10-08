@@ -1,5 +1,6 @@
-# java-filmorate
-Репозиторий шаблонов для проекта Filmorate.
+# Filmorate
+Сервис рекомендаций и ранжирования фильмов для друзей.
+Репозиторий шаблонов.
 
 ![kandinsky-download-1696760013544.jpg](kandinsky-download-1696760013544.jpg)
 
